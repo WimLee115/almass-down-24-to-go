@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossier 608 — Countdown</title>
+    <meta name="description" content="Klokkenluidersdossier over bewindvoerderskantoren. 02:00 CET gaat alles online.">
+    <meta property="og:title" content="Dossier 608 — 02:00 CET gaat het dossier live">
+    <meta property="og:description" content="Bewijsvernietiging. 250.000 kwetsbare Nederlanders. Malta. 28 vennootschappen. Eén man met een laptop.">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0a0a0a;
+            color: #00ff41;
+            font-family: 'Share Tech Mono', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15) 0px,
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .ascii-art {
+            font-size: 10px;
+            line-height: 1.2;
+            white-space: pre;
+            color: #00ff41;
+            margin: 20px auto;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        .dossier-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3em;
+            font-weight: 900;
+            color: #ff0040;
+            text-shadow: 0 0 30px #ff0040, 0 0 60px #ff004066;
+            margin: 30px 0 10px;
+            letter-spacing: 8px;
+        }
+
+        .tagline {
+            font-size: 1.1em;
+            color: #00ff41;
+            margin: 10px 0 40px;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        .countdown-container {
+            margin: 50px 0;
+        }
+
+        .countdown-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1em;
+            color: #ff0040;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-unit {
+            background: rgba(255, 0, 64, 0.1);
+            border: 2px solid #ff0040;
+            padding: 20px 25px;
+            min-width: 100px;
+            box-shadow: 0 0 20px rgba(255, 0, 64, 0.3), inset 0 0 20px rgba(255, 0, 64, 0.1);
+        }
+
+        .countdown-unit .number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5em;
+            font-weight: 900;
+            color: #ff0040;
+            text-shadow: 0 0 20px #ff0040;
+        }
+
+        .countdown-unit .label {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 5px;
+            letter-spacing: 3px;
+        }
+
+        .lulzsec {
+            margin: 40px auto;
+            font-size: 14px;
+            line-height: 1.1;
+            color: #00ff41;
+            text-shadow: 0 0 5px #00ff41;
+            white-space: pre;
+            font-family: monospace;
+        }
+
+        .info-box {
+            border: 1px solid #333;
+            padding: 30px;
+            margin: 40px 0;
+            text-align: left;
+            background: rgba(0, 255, 65, 0.02);
+        }
+
+        .info-box h3 {
+            color: #ff0040;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1em;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-box li {
+            padding: 8px 0;
+            border-bottom: 1px solid #1a1a1a;
+            font-size: 0.95em;
+        }
+
+        .info-box li::before {
+            content: '> ';
+            color: #ff0040;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #ffcc00;
+            font-size: 1.3em;
+            margin: 50px 0;
+            text-shadow: 0 0 15px #ffcc0066;
+        }
+
+        .quote .author {
+            display: block;
+            font-size: 0.6em;
+            color: #666;
+            margin-top: 10px;
+            font-style: normal;
+        }
+
+        .blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #222;
+            color: #444;
+            font-size: 0.8em;
+        }
+
+        .live-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #ff0040;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 1.5s infinite;
+        }
+
+        #status-text {
+            color: #ff0040;
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="scanline"></div>
+
+<div class="container">
+
+    <div class="lulzsec">
+         _
+        | |
+   _ __ | |_   _ ___
+  | '_ \| | | | / __|
+  | |_) | | |_| \__ \
+  | .__/|_|\__,_|___/
+  | |
+  |_|  ultra 🍷
+
+    ██████╗  ██████╗ ███████╗███████╗██╗███████╗██████╗
+    ██╔══██╗██╔═══██╗██╔════╝██╔════╝██║██╔════╝██╔══██╗
+    ██║  ██║██║   ██║███████╗███████╗██║█████╗  ██████╔╝
+    ██║  ██║██║   ██║╚════██║╚════██║██║██╔══╝  ██╔══██╗
+    ██████╔╝╚██████╔╝███████║███████║██║███████╗██║  ██║
+    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚═╝╚══════╝╚═╝  ╚═╝
+    </div>
+
+    <div class="dossier-title">608</div>
+    <p class="tagline">Ze hadden met mij de verkeerde te pakken.</p>
+
+    <div class="countdown-container">
+        <div class="countdown-label">
+            <span class="live-dot"></span>DOSSIER GAAT LIVE OVER
+        </div>
+        <div class="countdown" id="countdown">
+            <div class="countdown-unit">
+                <div class="number" id="hours">--</div>
+                <div class="label">UREN</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="number" id="minutes">--</div>
+                <div class="label">MINUTEN</div>
+            </div>
+            <div class="countdown-unit">
+                <div class="number" id="seconds">--</div>
+                <div class="label">SECONDEN</div>
+            </div>
+        </div>
+        <p id="status-text" class="pulse">02:00 CET — 7 MAART 2026</p>
+    </div>
+
+    <div class="info-box">
+        <h3>WAT KOMT ER?</h3>
+        <ul>
+            <li>Persbericht — voor alle media ter wereld</li>
+            <li>15.000+ bewijsbestanden — SHA256-gehashed, blockchain-getimestamped</li>
+            <li>Netwerkanalyse — 28+ vennootschappen in 3 landen</li>
+            <li>Geldstroom — van Nederland via Londen naar Malta</li>
+            <li>Bewijsvernietiging — 28 pagina's verwijderd door 5 kantoren in 48 uur</li>
+            <li>Namen. Data. Bedragen. Alles verifieerbaar.</li>
+        </ul>
+    </div>
+
+    <div class="info-box">
+        <h3>VOOR WIE?</h3>
+        <ul>
+            <li>Onderzoeksjournalisten (NL en internationaal)</li>
+            <li>Toezichthouders — ACM, AFM, DNB, AP, BFT</li>
+            <li>250.000 Nederlanders onder beschermingsbewind</li>
+            <li>Iedereen die gelooft dat kwetsbare mensen bescherming verdienen</li>
+        </ul>
+    </div>
+
+    <div class="quote">
+        "Computers sinds mijn zesde. OSINT en cybersecurity sinds twintig jaar.<br>
+        Ze dachten dat ze te maken hadden met een hulpeloze cliënt."
+        <span class="author">— B. van Rooij, 37, Mill</span>
+    </div>
+
+    <div class="footer">
+        <p>Dossier 608 — B. van Rooij vs. Almass Bewindvoering B.V.</p>
+        <p>Alle informatie verkregen via openbare bronnen (OSINT). Geen ongeautoriseerde toegang.</p>
+    </div>
+
+</div>
+
+<script>
+    // Target: 7 maart 2026, 02:00 CET (Amsterdam = UTC+1, but in March CET = UTC+1)
+    // CET = UTC+1
+    const target = new Date('2026-03-07T01:00:00Z'); // 02:00 CET = 01:00 UTC
+
+    function updateCountdown() {
+        const now = new Date();
+        const diff = target - now;
+
+        if (diff <= 0) {
+            document.getElementById('hours').textContent = '00';
+            document.getElementById('minutes').textContent = '00';
+            document.getElementById('seconds').textContent = '00';
+            document.getElementById('status-text').textContent = 'HET DOSSIER IS LIVE';
+            document.getElementById('status-text').style.color = '#00ff41';
+            document.getElementById('status-text').className = 'blink';
+            return;
+        }
+
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
