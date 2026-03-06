@@ -3,284 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dossier 608 — Countdown</title>
-    <meta name="description" content="Klokkenluidersdossier over bewindvoerderskantoren. 02:00 CET gaat alles online.">
-    <meta property="og:title" content="Dossier 608 — 02:00 CET gaat het dossier live">
-    <meta property="og:description" content="Bewijsvernietiging. 250.000 kwetsbare Nederlanders. Malta. 28 vennootschappen. Eén man met een laptop.">
+    <title>Dossier 608 — Almass Bewindvoering Ontmaskerd</title>
+    <meta name="description" content="Klokkenluidersdossier: bewindvoerderskantoor Almass ontmaskerd. 28+ vennootschappen, bewijsvernietiging, geld via Malta.">
+    <meta property="og:title" content="Dossier 608 — Almass Bewindvoering Ontmaskerd">
+    <meta property="og:description" content="28+ vennootschappen. Bewijsvernietiging. 250.000 cliënten via Malta. Eén man met een laptop.">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+        :root { --green:#00ff41; --red:#ff0040; --amber:#ffcc00; --bg:#0a0a0a; --card:rgba(0,255,65,0.02); --border:#1a1a1a; }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:var(--bg);color:var(--green);font-family:'JetBrains Mono','Share Tech Mono',monospace;min-height:100vh;overflow-x:hidden;font-size:14px;line-height:1.6}
+        .scanline{position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,rgba(0,0,0,.15) 0px,rgba(0,0,0,.15) 1px,transparent 1px,transparent 2px);pointer-events:none;z-index:1000}
+        .container{max-width:960px;margin:0 auto;padding:30px 20px}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* COUNTDOWN */
+        #countdown-phase{text-align:center;min-height:100vh;display:flex;flex-direction:column;justify-content:center}
+        .ascii-logo{font-size:9px;line-height:1.15;white-space:pre;color:var(--green);text-shadow:0 0 10px var(--green);margin:0 auto 20px}
+        .dossier-num{font-family:'Orbitron',sans-serif;font-size:4em;font-weight:900;color:var(--red);text-shadow:0 0 40px var(--red),0 0 80px rgba(255,0,64,.3);letter-spacing:12px}
+        .tagline{font-size:1.1em;color:var(--green);margin:15px 0 50px;text-shadow:0 0 10px var(--green);font-style:italic}
+        .countdown{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:30px 0}
+        .countdown-unit{background:rgba(255,0,64,.08);border:2px solid var(--red);padding:20px 30px;min-width:110px;box-shadow:0 0 25px rgba(255,0,64,.2);transition:box-shadow .3s}
+        .countdown-unit.fast{box-shadow:0 0 40px rgba(255,0,64,.5),0 0 80px rgba(255,0,64,.2)}
+        .countdown-unit .number{font-family:'Orbitron',sans-serif;font-size:3.5em;font-weight:900;color:var(--red);text-shadow:0 0 20px var(--red)}
+        .countdown-unit .label{font-size:.75em;color:#555;letter-spacing:3px;margin-top:5px}
+        .live-dot{display:inline-block;width:8px;height:8px;background:var(--red);border-radius:50%;margin-right:8px;animation:pulse 1.5s infinite}
+        #status-text{color:var(--red);font-family:'Orbitron',sans-serif;font-size:1em;letter-spacing:3px;margin:20px 0}
+        #speed-indicator{color:var(--amber);font-size:.85em;margin-top:10px;opacity:0;transition:opacity .5s}
+        .countdown-teaser{border:1px solid var(--border);padding:25px;margin:40px auto;max-width:600px;text-align:left;background:var(--card)}
+        .countdown-teaser li{list-style:none;padding:6px 0;border-bottom:1px solid #111}
+        .countdown-teaser li::before{content:'> ';color:var(--red)}
+        .quote{font-style:italic;color:var(--amber);font-size:1.2em;text-align:center;margin:40px 0;padding:30px;border-left:3px solid var(--amber);text-shadow:0 0 10px rgba(255,204,0,.2)}
+        .quote .author{display:block;font-size:.6em;color:#666;margin-top:10px;font-style:normal}
 
-        body {
-            background: #0a0a0a;
-            color: #00ff41;
-            font-family: 'Share Tech Mono', monospace;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+        /* REVEAL FLASH */
+        #flash-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:2000;opacity:0;pointer-events:none;transition:opacity .1s}
+        #flash-overlay.flash{opacity:1}
 
-        .scanline {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0.15) 0px,
-                rgba(0, 0, 0, 0.15) 1px,
-                transparent 1px,
-                transparent 2px
-            );
-            pointer-events: none;
-            z-index: 1000;
-        }
+        /* DOSSIER */
+        #dossier-phase{display:none}
+        .header-bar{border-bottom:2px solid var(--red);padding-bottom:20px;margin-bottom:40px}
+        .header-bar h1{font-family:'Orbitron',sans-serif;font-size:1.4em;color:var(--red);letter-spacing:4px;font-weight:900}
+        .header-bar .subtitle{color:var(--green);margin-top:8px;font-size:.95em}
+        .header-bar .meta{color:#555;font-size:.8em;margin-top:10px}
+        .header-bar .meta a{color:var(--green);text-decoration:none}
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
-        }
+        .fact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;margin:30px 0}
+        .fact-card{border:1px solid var(--border);padding:20px;background:var(--card);transition:border-color .3s}
+        .fact-card:hover{border-color:var(--red)}
+        .fact-card .number{font-family:'Orbitron',sans-serif;font-size:2em;font-weight:900;color:var(--red);text-shadow:0 0 15px rgba(255,0,64,.5)}
+        .fact-card .desc{color:var(--green);font-size:.85em;margin-top:8px}
 
-        .ascii-art {
-            font-size: 10px;
-            line-height: 1.2;
-            white-space: pre;
-            color: #00ff41;
-            margin: 20px auto;
-            text-shadow: 0 0 10px #00ff41;
-        }
+        .section{border:1px solid var(--border);margin:25px 0;background:var(--card)}
+        .section-header{background:rgba(255,0,64,.08);padding:15px 20px;border-bottom:1px solid var(--border);font-family:'Orbitron',sans-serif;font-size:.85em;color:var(--red);letter-spacing:3px;font-weight:700}
+        .section-body{padding:20px}
+        .section-body p,.section-body li{margin-bottom:8px}
+        .section-body ul{list-style:none;padding:0}
+        .section-body li::before{content:'> ';color:var(--red)}
 
-        .dossier-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3em;
-            font-weight: 900;
-            color: #ff0040;
-            text-shadow: 0 0 30px #ff0040, 0 0 60px #ff004066;
-            margin: 30px 0 10px;
-            letter-spacing: 8px;
-        }
+        .timeline-item{display:flex;gap:15px;padding:10px 0;border-bottom:1px solid #111}
+        .timeline-time{color:var(--red);min-width:140px;font-weight:700;white-space:nowrap}
+        .timeline-event{color:var(--green)}
 
-        .tagline {
-            font-size: 1.1em;
-            color: #00ff41;
-            margin: 10px 0 40px;
-            text-shadow: 0 0 10px #00ff41;
-        }
+        .flow{text-align:center;padding:20px}
+        .flow-step{display:inline-block;border:2px solid var(--red);padding:12px 20px;margin:5px;background:rgba(255,0,64,.05);font-size:.85em}
+        .flow-arrow{color:var(--red);font-size:1.5em;display:block;margin:5px 0}
+        .flow-warning{color:var(--amber);font-weight:700;font-size:1.1em;margin-top:15px;text-shadow:0 0 10px rgba(255,204,0,.3)}
 
-        .countdown-container {
-            margin: 50px 0;
-        }
+        .smoking-gun{border:2px solid var(--amber)!important;background:rgba(255,204,0,.03)!important}
+        .smoking-gun .section-header{background:rgba(255,204,0,.1);color:var(--amber)}
 
-        .countdown-label {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1em;
-            color: #ff0040;
-            letter-spacing: 5px;
-            margin-bottom: 20px;
-        }
+        .tomorrow{border:2px solid var(--amber)!important;background:rgba(255,204,0,.05)!important}
+        .tomorrow .section-header{background:rgba(255,204,0,.15);color:var(--amber);font-size:1em;letter-spacing:4px}
 
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+        .network-ascii{font-size:11px;line-height:1.3;white-space:pre;overflow-x:auto;padding:15px;color:var(--green);text-shadow:0 0 3px var(--green)}
 
-        .countdown-unit {
-            background: rgba(255, 0, 64, 0.1);
-            border: 2px solid #ff0040;
-            padding: 20px 25px;
-            min-width: 100px;
-            box-shadow: 0 0 20px rgba(255, 0, 64, 0.3), inset 0 0 20px rgba(255, 0, 64, 0.1);
-        }
+        table{width:100%;border-collapse:collapse;font-size:.85em}
+        th{text-align:left;color:var(--red);padding:8px;border-bottom:2px solid var(--red);font-family:'Orbitron',sans-serif;font-size:.8em;letter-spacing:2px}
+        td{padding:8px;border-bottom:1px solid #111;color:var(--green)}
+        tr:hover td{background:rgba(255,0,64,.03)}
 
-        .countdown-unit .number {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3.5em;
-            font-weight: 900;
-            color: #ff0040;
-            text-shadow: 0 0 20px #ff0040;
-        }
+        .footer{margin-top:50px;padding:20px;border-top:1px solid var(--border);color:#444;font-size:.75em;text-align:center}
+        .footer a{color:var(--green);text-decoration:none}
 
-        .countdown-unit .label {
-            font-size: 0.8em;
-            color: #666;
-            margin-top: 5px;
-            letter-spacing: 3px;
-        }
+        @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+        @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+        @keyframes glitch{0%{transform:translate(0)}20%{transform:translate(-2px,2px)}40%{transform:translate(2px,-2px)}60%{transform:translate(-1px,-1px)}80%{transform:translate(1px,1px)}100%{transform:translate(0)}}
+        .blink{animation:blink 1s infinite}
+        .pulse{animation:pulse 2s infinite}
+        .glitch{animation:glitch .1s infinite}
 
-        .lulzsec {
-            margin: 40px auto;
-            font-size: 14px;
-            line-height: 1.1;
-            color: #00ff41;
-            text-shadow: 0 0 5px #00ff41;
-            white-space: pre;
-            font-family: monospace;
-        }
-
-        .info-box {
-            border: 1px solid #333;
-            padding: 30px;
-            margin: 40px 0;
-            text-align: left;
-            background: rgba(0, 255, 65, 0.02);
-        }
-
-        .info-box h3 {
-            color: #ff0040;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1em;
-            letter-spacing: 3px;
-            margin-bottom: 15px;
-        }
-
-        .info-box ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .info-box li {
-            padding: 8px 0;
-            border-bottom: 1px solid #1a1a1a;
-            font-size: 0.95em;
-        }
-
-        .info-box li::before {
-            content: '> ';
-            color: #ff0040;
-        }
-
-        .quote {
-            font-style: italic;
-            color: #ffcc00;
-            font-size: 1.3em;
-            margin: 50px 0;
-            text-shadow: 0 0 15px #ffcc0066;
-        }
-
-        .quote .author {
-            display: block;
-            font-size: 0.6em;
-            color: #666;
-            margin-top: 10px;
-            font-style: normal;
-        }
-
-        .blink {
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0; }
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        .footer {
-            margin-top: 60px;
-            padding-top: 20px;
-            border-top: 1px solid #222;
-            color: #444;
-            font-size: 0.8em;
-        }
-
-        .live-dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: #ff0040;
-            border-radius: 50%;
-            margin-right: 8px;
-            animation: pulse 1.5s infinite;
-        }
-
-        #status-text {
-            color: #ff0040;
-            font-size: 1.2em;
-            margin: 20px 0;
+        @media(max-width:600px){
+            .dossier-num{font-size:2.5em}
+            .fact-grid{grid-template-columns:1fr 1fr}
+            .countdown-unit{min-width:80px;padding:15px}
+            .countdown-unit .number{font-size:2.5em}
+            .network-ascii{font-size:9px}
+            .ascii-logo{font-size:6px}
         }
     </style>
 </head>
 <body>
-
 <div class="scanline"></div>
+<div id="flash-overlay"></div>
 
+<!-- =================== COUNTDOWN =================== -->
+<div id="countdown-phase">
 <div class="container">
+    <div class="ascii-logo">
+ ██████╗  ██████╗ ███████╗███████╗██╗███████╗██████╗      ██████╗  ██████╗  █████╗
+ ██╔══██╗██╔═══██╗██╔════╝██╔════╝██║██╔════╝██╔══██╗    ██╔════╝ ██╔═████╗██╔══██╗
+ ██║  ██║██║   ██║███████╗███████╗██║█████╗  ██████╔╝    ███████╗ ██║██╔██║╚█████╔╝
+ ██║  ██║██║   ██║╚════██║╚════██║██║██╔══╝  ██╔══██╗    ██╔═══██╗████╔╝██║██╔══██╗
+ ██████╔╝╚██████╔╝███████║███████║██║███████╗██║  ██║    ╚██████╔╝╚██████╔╝╚█████╔╝
+ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚═╝╚══════╝╚═╝  ╚═╝     ╚═════╝  ╚═════╝  ╚════╝</div>
 
-    <div class="lulzsec">
-         _
-        | |
-   _ __ | |_   _ ___
-  | '_ \| | | | / __|
-  | |_) | | |_| \__ \
-  | .__/|_|\__,_|___/
-  | |
-  |_|  ultra 🍷
-
-    ██████╗  ██████╗ ███████╗███████╗██╗███████╗██████╗
-    ██╔══██╗██╔═══██╗██╔════╝██╔════╝██║██╔════╝██╔══██╗
-    ██║  ██║██║   ██║███████╗███████╗██║█████╗  ██████╔╝
-    ██║  ██║██║   ██║╚════██║╚════██║██║██╔══╝  ██╔══██╗
-    ██████╔╝╚██████╔╝███████║███████║██║███████╗██║  ██║
-    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝╚═╝╚══════╝╚═╝  ╚═╝
-    </div>
-
-    <div class="dossier-title">608</div>
+    <div class="dossier-num">608</div>
     <p class="tagline">Ze hadden met mij de verkeerde te pakken.</p>
 
-    <div class="countdown-container">
-        <div class="countdown-label">
-            <span class="live-dot"></span>DOSSIER GAAT LIVE OVER
-        </div>
+    <div>
+        <div id="status-text" class="pulse"><span class="live-dot"></span>DOSSIER GAAT LIVE OVER</div>
         <div class="countdown" id="countdown">
-            <div class="countdown-unit">
-                <div class="number" id="hours">--</div>
-                <div class="label">UREN</div>
-            </div>
-            <div class="countdown-unit">
-                <div class="number" id="minutes">--</div>
-                <div class="label">MINUTEN</div>
-            </div>
-            <div class="countdown-unit">
-                <div class="number" id="seconds">--</div>
-                <div class="label">SECONDEN</div>
-            </div>
+            <div class="countdown-unit" id="cu-h"><div class="number" id="hours">--</div><div class="label">UREN</div></div>
+            <div class="countdown-unit" id="cu-m"><div class="number" id="minutes">--</div><div class="label">MINUTEN</div></div>
+            <div class="countdown-unit" id="cu-s"><div class="number" id="seconds">--</div><div class="label">SECONDEN</div></div>
         </div>
-        <p id="status-text" class="pulse">02:00 CET — 7 MAART 2026</p>
+        <p id="speed-indicator"></p>
     </div>
 
-    <div class="info-box">
-        <h3>WAT KOMT ER?</h3>
-        <ul>
-            <li>Persbericht — voor alle media ter wereld</li>
-            <li>15.000+ bewijsbestanden — SHA256-gehashed, blockchain-getimestamped</li>
-            <li>Netwerkanalyse — 28+ vennootschappen in 3 landen</li>
-            <li>Geldstroom — van Nederland via Londen naar Malta</li>
-            <li>Bewijsvernietiging — 28 pagina's verwijderd door 5 kantoren in 48 uur</li>
-            <li>Namen. Data. Bedragen. Alles verifieerbaar.</li>
-        </ul>
-    </div>
-
-    <div class="info-box">
-        <h3>VOOR WIE?</h3>
-        <ul>
-            <li>Onderzoeksjournalisten (NL en internationaal)</li>
-            <li>Toezichthouders — ACM, AFM, DNB, AP, BFT</li>
-            <li>250.000 Nederlanders onder beschermingsbewind</li>
-            <li>Iedereen die gelooft dat kwetsbare mensen bescherming verdienen</li>
-        </ul>
+    <div class="countdown-teaser">
+        <li>28+ vennootschappen in 3 landen achter één bewindvoerderskantoor</li>
+        <li>Bewijsvernietiging: 28 pagina's gewist in 48 uur</li>
+        <li>Geld van 250.000 cliënten via Londen naar Malta — buiten toezicht</li>
+        <li>15.000+ bewijsbestanden — SHA256-gehashed, blockchain-getimestampt</li>
+        <li>Eén man. Eén laptop. Twintig jaar OSINT.</li>
     </div>
 
     <div class="quote">
@@ -288,45 +142,338 @@
         Ze dachten dat ze te maken hadden met een hulpeloze cliënt."
         <span class="author">— B. van Rooij, 37, Mill</span>
     </div>
+</div>
+</div>
 
+<!-- =================== DOSSIER =================== -->
+<div id="dossier-phase">
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header-bar">
+        <h1>DOSSIER 608 — ALMASS ONTMASKERD</h1>
+        <p class="subtitle">Klokkenluidersdossier: 28+ vennootschappen, bewijsvernietiging, geld via Malta</p>
+        <p class="meta">7 maart 2026 &bull; B. van Rooij &bull; <a href="https://github.com/WimLee115/almass-down-24-to-go">GitHub</a></p>
+    </div>
+
+    <!-- FACT CARDS -->
+    <div class="fact-grid">
+        <div class="fact-card">
+            <div class="number">&euro;33.471</div>
+            <div class="desc">schade &mdash; 15 gebreken in bewindvoering door Almass</div>
+        </div>
+        <div class="fact-card">
+            <div class="number">28+</div>
+            <div class="desc">vennootschappen in 3 landen achter Almass</div>
+        </div>
+        <div class="fact-card">
+            <div class="number">8,5 uur</div>
+            <div class="desc">tussen screenshots en eerste bewijsvernietiging door directeur Van Iersel</div>
+        </div>
+        <div class="fact-card">
+            <div class="number">250K</div>
+            <div class="desc">cli&euml;nten wier geld via Malta loopt &mdash; buiten toezicht AFM/DNB</div>
+        </div>
+        <div class="fact-card">
+            <div class="number">15.000+</div>
+            <div class="desc">bewijsbestanden &mdash; SHA256-gehashed, blockchain-getimestampt</div>
+        </div>
+        <div class="fact-card">
+            <div class="number">20 jaar</div>
+            <div class="desc">OSINT &amp; cybersecurity &mdash; computers sinds mijn zesde</div>
+        </div>
+    </div>
+
+    <!-- QUOTE -->
+    <div class="quote">
+        "Ze hadden met mij de verkeerde te pakken."
+        <span class="author">&mdash; B. van Rooij, 37, Mill</span>
+    </div>
+
+    <!-- WIE IS ALMASS -->
+    <div class="section">
+        <div class="section-header">WIE IS ALMASS BEWINDVOERING B.V.?</div>
+        <div class="section-body">
+            <p><strong>Almass Bewindvoering B.V.</strong> (KvK 55819125, Spinding 5, Cuijk) wordt geleid door directeur <strong>D.A.M. van Iersel MBA</strong>. Het kantoor beheert de financi&euml;n van kwetsbare mensen onder beschermingsbewind.</p>
+            <br>
+            <p>Na vier jaar bewindvoering voor &eacute;&eacute;n cli&euml;nt constateerde die cli&euml;nt 15 structurele gebreken. Geschatte schade: <strong>EUR 33.471</strong>. De cli&euml;nt kwam bij Almass met EUR 681 schuld. Na vier jaar bewind: EUR 6.418 schuld, geen spaargeld, een CAK-wanbetaling. Van zijn netto-inkomen van EUR 107.921 is 20-22% verdwenen.</p>
+            <br>
+            <p>Maar de zaak van &eacute;&eacute;n cli&euml;nt onthulde iets veel groters.</p>
+        </div>
+    </div>
+
+    <!-- BEWIJSVERNIETIGING -->
+    <div class="section">
+        <div class="section-header">BEWIJSVERNIETIGING &mdash; 8,5 UUR NA SCREENSHOTS</div>
+        <div class="section-body">
+            <p>Op 4 maart 2026 stuurde Van Rooij een sommatie aan Almass. Diezelfde avond om 23:27 maakte hij screenshots van de volledige website. Alles functioneerde normaal.</p>
+            <br>
+            <div class="timeline-item">
+                <span class="timeline-time">4 mrt &bull; 15:30</span>
+                <span class="timeline-event">Sommatie verzonden aan Almass (BvR-2026-002)</span>
+            </div>
+            <div class="timeline-item">
+                <span class="timeline-time">4 mrt &bull; 23:27</span>
+                <span class="timeline-event">Screenshots van alle Almass-pagina's &mdash; alles online</span>
+            </div>
+            <div class="timeline-item">
+                <span class="timeline-time">5 mrt &bull; 07:57</span>
+                <span class="timeline-event" style="color:var(--red)">Eerste pagina gewijzigd door Van Iersel (Last-Modified server-header)</span>
+            </div>
+            <div class="timeline-item">
+                <span class="timeline-time">5 mrt &bull; 08:02&ndash;12:55</span>
+                <span class="timeline-event" style="color:var(--red)">14 pagina's herschreven, 4 permanent verwijderd (HTTP 404)</span>
+            </div>
+            <br>
+            <p><strong>Verwijderde pagina's:</strong></p>
+            <ul>
+                <li><code>/bewindvoering-b-v/</code> &mdash; dienstbeschrijving (verwijderd tijdens aansprakelijkstelling)</li>
+                <li><code>/voorstellen-medewerkers/</code> &mdash; teamoverzicht (KvK vermeldt &ldquo;1 werknemer&rdquo; maar site toonde 7+)</li>
+                <li><code>/almass-en-de-avg/</code> &mdash; privacybeleid (verwijderd tijdens lopend AVG-inzageverzoek)</li>
+                <li><code>/klachtenreglement/</code> &mdash; klachtenprocedure (verwijderd tijdens klacht)</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- SMOKING GUN -->
+    <div class="section smoking-gun">
+        <div class="section-header">SMOKING GUN &mdash; STOFFELSMA.COM</div>
+        <div class="section-body">
+            <p><strong>stoffelsma.com</strong> &mdash; gepresenteerd als een onafhankelijk bewindvoerderskantoor &mdash; stuurt middels een HTTP 301 redirect permanent door naar <strong>almassbv.com</strong>.</p>
+            <br>
+            <div style="background:#111;padding:15px;border-left:3px solid var(--amber);font-size:.9em">
+                <code>$ curl -I https://stoffelsma.com<br>HTTP/1.1 301 Moved Permanently<br>Location: https://www.almassbv.com/</code>
+            </div>
+            <br>
+            <p>Dit is het rokend pistool. Kantoren die zogenaamd onafhankelijk opereren, zijn technisch &eacute;&eacute;n en dezelfde organisatie.</p>
+        </div>
+    </div>
+
+    <!-- NETWERK -->
+    <div class="section">
+        <div class="section-header">HET NETWERK &mdash; 28+ VENNOOTSCHAPPEN IN 3 LANDEN</div>
+        <div class="section-body">
+            <p>Achter Almass Bewindvoering schuilt een netwerk van minimaal 28 rechtspersonen in Nederland, het Verenigd Koninkrijk en Duitsland.</p>
+            <br>
+            <div class="network-ascii">
+                     Van Iersel-van Roessel (Helvoirt)
+                                 &boxv;
+                     Van Iersel Beheer B.V. (KvK 73960152)
+                                 &boxv;
+                 &boxdr;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&boxhd;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&boxdl;
+                 &boxv;                   &boxv;                   &boxv;
+         Almass Bewind.       Almass Admin.        + 4 BV's
+         (KvK 55819125)       (KvK 55819257)
+                 &boxv;
+     &boxdr;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&boxhd;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&HorizontalLine;&boxdl;
+     &boxv;           &boxv;           &boxv;           &boxv;           &boxv;
+ Tonnissen    Hopmans    Stoffelsma   Van Roessel    CNAD
+                        (301&rarr;Almass)
+
+ + Stichting Het Palet + Zeche Amalia (DE) + Rogmann GmbH (DE)
+            </div>
+            <br>
+            <p>Volledig netwerkschema: <a href="https://github.com/WimLee115/almass-down-24-to-go/blob/main/netwerk/README.md" style="color:var(--green)">netwerk/README.md</a></p>
+        </div>
+    </div>
+
+    <!-- GELDSTROOM -->
+    <div class="section">
+        <div class="section-header">GELDSTROOM &mdash; VIA MALTA, BUITEN TOEZICHT</div>
+        <div class="section-body">
+            <p>Branchevereniging Aegis biedt haar 1.300 aangesloten kantoren het betaalplatform <strong>Modura</strong> aan. Het geld gaat via:</p>
+            <div class="flow">
+                <div class="flow-step">1.300 kantoren<br><small>~250.000 cli&euml;nten</small></div>
+                <div class="flow-arrow">&darr; <small>betaalplatform &ldquo;Modura&rdquo;</small></div>
+                <div class="flow-step">Aegis<br><small>branchevereniging &mdash; voorzitter: Dennis Wiersma (ex-minister VVD)</small></div>
+                <div class="flow-arrow">&darr;</div>
+                <div class="flow-step">Orenda Financial Services Ltd<br><small>Londen &mdash; Companies House 12404984</small><br><small>Enig bestuurder: P.J. Vittori &mdash; 4 entiteiten, 1 ontbonden</small></div>
+                <div class="flow-arrow">&darr;</div>
+                <div class="flow-step" style="border-color:var(--amber)">Transact Payments Malta Ltd<br><small>Il-G&#380;ira &mdash; MFSA C 91879</small></div>
+                <div class="flow-warning">&bnot; GEEN NL Depositogarantie &bull; GEEN AFM/DNB-toezicht</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MORGEN MEER -->
+    <div class="section tomorrow">
+        <div class="section-header">&#9200; MORGEN: MEER KANTOREN WORDEN ONTMASKERD</div>
+        <div class="section-body">
+            <p>Almass opereert niet alleen. Op <strong>6 maart 2026</strong> verwijderden vier andere kantoren gecoördineerd 24 webpagina's &mdash; op dezelfde ochtend, na &eacute;&eacute;n sommatie aan &eacute;&eacute;n kantoor.</p>
+            <br>
+            <p>Het onderzoek naar deze kantoren loopt. Na grondige analyse van alle bewijzen volgt morgen de volgende onthulling:</p>
+            <br>
+            <ul>
+                <li>Welke kantoren betrokken zijn bij de geco&ouml;rdineerde bewijsvernietiging</li>
+                <li>Het Convenant Gennep &mdash; de formele samenwerkingsovereenkomst die het kartel bewijst</li>
+                <li>Gedeelde IT-infrastructuur &mdash; kantoren die &ldquo;concurreren&rdquo; maar op dezelfde servers draaien</li>
+                <li>Familieverbanden en kruisbestuurderschap</li>
+                <li>Nog meer vennootschappen</li>
+            </ul>
+            <br>
+            <p style="color:var(--amber);font-weight:700">Dit dossier groeit elke dag. Blijf kijken.</p>
+        </div>
+    </div>
+
+    <!-- KLACHTEN -->
+    <div class="section">
+        <div class="section-header">KLACHTEN WORDEN INGEDIEND &mdash; 9 MAART 2026</div>
+        <div class="section-body">
+            <table>
+                <thead><tr><th>Instantie</th><th>Onderwerp</th></tr></thead>
+                <tbody>
+                    <tr><td>Kantonrechter Oost-Brabant</td><td>Ontslag bewindvoerder, schadevergoeding &euro;33.471</td></tr>
+                    <tr><td>ACM</td><td>Kartelvorming, mededingingsbeperking</td></tr>
+                    <tr><td>Autoriteit Persoonsgegevens</td><td>AVG-schendingen, wachtwoorden platte tekst</td></tr>
+                    <tr><td>Bureau Financieel Toezicht</td><td>Kruisbestuurdersschap, ontbrekende jaarrekeningen</td></tr>
+                    <tr><td>AFM / DNB</td><td>Modura/Malta &mdash; gelden buiten toezicht</td></tr>
+                    <tr><td>Politie</td><td>Verduistering, valsheid in geschrifte, art. 140 Sr</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- VOOR JOURNALISTEN -->
+    <div class="section">
+        <div class="section-header">VOOR JOURNALISTEN</div>
+        <div class="section-body">
+            <p>Dit dossier bevat <strong>uitsluitend</strong> informatie verkregen via openbare bronnen (OSINT): KvK-registers, Companies House UK, DNS-records, HTTP-headers, Wayback Machine, openbare convenanten.</p>
+            <br>
+            <p><strong>Geen hacking. Geen gelekte documenten. Alles verifieerbaar.</strong></p>
+            <br>
+            <p>Het volledige dossier (15.000+ bestanden, 500+ MB) is beschikbaar voor inzage na afspraak.</p>
+            <br>
+            <ul>
+                <li>Persbericht: <a href="https://github.com/WimLee115/almass-down-24-to-go/blob/main/persbericht/PERSBERICHT_DOSSIER_608.md" style="color:var(--green)">persbericht/</a></li>
+                <li>Netwerkanalyse: <a href="https://github.com/WimLee115/almass-down-24-to-go/blob/main/netwerk/README.md" style="color:var(--green)">netwerk/</a></li>
+                <li>Bewijsvernietiging: <a href="https://github.com/WimLee115/almass-down-24-to-go/blob/main/bewijs/bewijsvernietiging.md" style="color:var(--green)">bewijs/</a></li>
+                <li>Geldstroom Malta: <a href="https://github.com/WimLee115/almass-down-24-to-go/blob/main/modura/README.md" style="color:var(--green)">modura/</a></li>
+            </ul>
+            <br>
+            <p><strong>Contact:</strong> B. van Rooij &mdash; e-mailadres op aanvraag</p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
     <div class="footer">
-        <p>Dossier 608 — B. van Rooij vs. Almass Bewindvoering B.V.</p>
-        <p>Alle informatie verkregen via openbare bronnen (OSINT). Geen ongeautoriseerde toegang.</p>
+        <p>Dossier 608 &mdash; B. van Rooij vs. Almass Bewindvoering B.V. &mdash; 7 maart 2026</p>
+        <p>SHA256-gehashed &bull; Blockchain-getimestampt via OpenTimestamps &bull; Extern veiliggesteld</p>
+        <p style="margin-top:10px"><a href="https://github.com/WimLee115/almass-down-24-to-go">GitHub Repository</a></p>
     </div>
 
 </div>
+</div>
 
 <script>
-    // Target: 7 maart 2026, 02:00 CET (Amsterdam = UTC+1, but in March CET = UTC+1)
-    // CET = UTC+1
-    const target = new Date('2026-03-07T01:00:00Z'); // 02:00 CET = 01:00 UTC
+// ====== CONFIG ======
+// Target: 7 maart 2026 02:00 CET = 01:00 UTC
+const realTarget = new Date('2026-03-07T01:00:00Z').getTime();
+const ACCEL_ZONE = 59 * 60 * 1000;   // acceleration starts 59 min before target
+const EARLY_MS   =  8 * 60 * 1000;   // clock hits zero 8 min early
+const EXPO = 0.5;                      // power curve: < 1 = acceleration
 
-    function updateCountdown() {
-        const now = new Date();
-        const diff = target - now;
+function getDisplayedRemaining(now) {
+    const realRemaining = realTarget - now;
 
-        if (diff <= 0) {
-            document.getElementById('hours').textContent = '00';
-            document.getElementById('minutes').textContent = '00';
-            document.getElementById('seconds').textContent = '00';
-            document.getElementById('status-text').textContent = 'HET DOSSIER IS LIVE';
-            document.getElementById('status-text').style.color = '#00ff41';
-            document.getElementById('status-text').className = 'blink';
-            return;
-        }
+    // Already past real target
+    if (realRemaining <= 0) return 0;
 
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    // Not yet in acceleration zone — normal countdown
+    if (realRemaining > ACCEL_ZONE) return realRemaining;
 
-        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    // In acceleration zone but past early deadline — show zero
+    if (realRemaining <= EARLY_MS) return 0;
+
+    // ACCELERATION: map real remaining to displayed remaining
+    // normalized: 1 (entering zone) → 0 (hitting zero early)
+    const norm = (realRemaining - EARLY_MS) / (ACCEL_ZONE - EARLY_MS);
+    return ACCEL_ZONE * Math.pow(norm, EXPO);
+}
+
+let revealed = false;
+let lastDisplayedSec = -1;
+
+function updateCountdown() {
+    const now = Date.now();
+    const displayedMs = getDisplayedRemaining(now);
+
+    if (displayedMs <= 0 && !revealed) {
+        revealDossier();
+        return;
     }
 
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-</script>
+    if (revealed) return;
 
+    const totalSec = Math.ceil(displayedMs / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+
+    document.getElementById('hours').textContent = String(h).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(m).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(s).padStart(2, '0');
+
+    // Speed indicator in the last 59 minutes
+    const realRemaining = realTarget - now;
+    if (realRemaining <= ACCEL_ZONE && realRemaining > EARLY_MS) {
+        const norm = (realRemaining - EARLY_MS) / (ACCEL_ZONE - EARLY_MS);
+        // Visual speed = derivative of displayed time / real time
+        const speed = EXPO * Math.pow(norm, EXPO - 1) * (ACCEL_ZONE / (ACCEL_ZONE - EARLY_MS));
+        const speedText = speed.toFixed(1) + 'x';
+
+        const indicator = document.getElementById('speed-indicator');
+        indicator.style.opacity = '1';
+
+        if (speed > 3) {
+            indicator.textContent = '⚡ ' + speedText + ' — VERSNELLING';
+            indicator.style.color = '#ff0040';
+            document.querySelectorAll('.countdown-unit').forEach(u => u.classList.add('fast'));
+        } else if (speed > 1.5) {
+            indicator.textContent = '⚡ ' + speedText;
+            indicator.style.color = '#ffcc00';
+        } else {
+            indicator.textContent = '▸ ' + speedText;
+            indicator.style.color = '#555';
+        }
+
+        // Make the tick interval variable for visual drama
+        const tickMs = Math.max(30, 1000 / speed);
+        // Glitch effect when super fast
+        if (speed > 5) {
+            document.getElementById('countdown').classList.add('glitch');
+        }
+    }
+}
+
+function revealDossier() {
+    revealed = true;
+
+    // Flash effect
+    const flash = document.getElementById('flash-overlay');
+    flash.classList.add('flash');
+
+    setTimeout(() => {
+        flash.style.transition = 'opacity 1s';
+        flash.classList.remove('flash');
+    }, 150);
+
+    setTimeout(() => {
+        document.getElementById('countdown-phase').style.display = 'none';
+        document.getElementById('dossier-phase').style.display = 'block';
+        window.scrollTo(0, 0);
+    }, 300);
+}
+
+// Init
+if (getDisplayedRemaining(Date.now()) <= 0) {
+    // Already past countdown — show dossier directly
+    document.getElementById('countdown-phase').style.display = 'none';
+    document.getElementById('dossier-phase').style.display = 'block';
+} else {
+    updateCountdown();
+    // Use fast interval for smooth acceleration display
+    setInterval(updateCountdown, 50);
+}
+</script>
 </body>
 </html>
