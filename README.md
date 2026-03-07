@@ -134,13 +134,15 @@ Verdere onderzoeksresultaten worden gepubliceerd **na overdracht aan de bevoegde
 
 ### Documenten
 
-| Map | Inhoud |
+De volledige documentatie — persbericht, netwerkanalyse, bewijsvernietiging, geldstroomanalyse en tijdlijn — wordt gepubliceerd **nadat het dossier is overgedragen aan de bevoegde instanties**. Dit om de vervolging niet te belemmeren en de integriteit van het onderzoek te waarborgen.
+
+| Map | Status |
 |-----|--------|
-| [`persbericht/`](persbericht/) | Volledig persbericht — alle feiten, alle bronnen |
-| [`netwerk/`](netwerk/) | Netwerkanalyse — 28+ vennootschappen, eigendomsschema's |
-| [`bewijs/`](bewijs/) | Bewijsvernietiging — HTTP-headers, timestamps, 404-documentatie |
-| [`modura/`](modura/) | Geldstroom Modura/Orenda/Malta — Companies House filings |
-| [`tijdlijn/`](tijdlijn/) | Volledige tijdlijn |
+| `persbericht/` | Wordt gepubliceerd na overdracht |
+| `netwerk/` | Wordt gepubliceerd na overdracht |
+| `bewijs/` | Wordt gepubliceerd na overdracht |
+| `modura/` | Wordt gepubliceerd na overdracht |
+| `tijdlijn/` | Wordt gepubliceerd na overdracht |
 
 ---
 
