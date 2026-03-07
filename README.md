@@ -113,19 +113,22 @@ GEEN Nederlandse Depositogarantie. GEEN AFM/DNB-toezicht.
 
 ---
 
-### ⏰ MORGEN: MEER KANTOREN WORDEN ONTMASKERD
+### ⏰ VOLGENDE WEEK: HET DOSSIER GAAT NAAR DE AUTORITEITEN
 
-Almass opereert niet alleen. Op **6 maart 2026** verwijderden **vier andere kantoren** gecoördineerd **24 webpagina's** — op dezelfde ochtend, na één sommatie aan één kantoor.
+Almass opereert niet alleen. Het onderzoek heeft aangetoond dat **meerdere kantoren** betrokken zijn bij gecoördineerde bewijsvernietiging.
 
-**Het onderzoek naar deze kantoren loopt.** Na grondige analyse van alle bewijzen volgt morgen de volgende onthulling:
+Het volledige dossier wordt **maandag 9 maart 2026** overgedragen aan:
 
-- Welke kantoren betrokken zijn bij de gecoördineerde bewijsvernietiging
-- Het Convenant Gennep — de formele samenwerkingsovereenkomst die het kartel bewijst
-- Gedeelde IT-infrastructuur — kantoren die "concurreren" maar op dezelfde servers draaien
-- Familieverbanden en kruisbestuurderschap
-- Nog meer vennootschappen
+- **Politie** — aangifte verduistering, valsheid in geschrifte, art. 140 Sr
+- **Openbaar Ministerie**
+- **Autoriteit Persoonsgegevens** — AVG-schendingen
+- **Autoriteit Consument & Markt** — kartelvorming
+- **Bureau Financieel Toezicht**
+- **AFM en DNB** — Modura/Malta-constructie
 
-**Dit dossier groeit elke dag. Blijf kijken.**
+Verdere onderzoeksresultaten worden gepubliceerd **na overdracht aan de bevoegde instanties**.
+
+**Volgende week wordt een belangrijke week voor bewindvoerders in het Land van Cuijk.**
 
 ---
 
